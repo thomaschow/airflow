@@ -302,7 +302,6 @@ def dag_show(args) -> None:
     else:
         print(dot.source)
 
-@cli_utils.action_cli
 @providers_configuration_loaded
 def dag_serialize(args) -> dict:
 
@@ -320,7 +319,8 @@ def dag_serialize(args) -> dict:
     def get_dag_detail(dag: DAG) -> dict:
         from airflow.serialization.serialized_objects import SerializedDAG
         dag_details = _get_dagbag_dag_details(dag)
-        ser_dag = SerializedDAG.serialize_dag(dag)
+        ser_dag = SerializedDAG.to_dict(dag)
+        ser_dag = ser_dag['dag']
         tasks = [v for t in ser_dag['tasks'] for v in t.values() if "task_id" in v ]
         reduced_tasks = [{k:d[k] for k in ("task_id", "downstream_task_ids")} for d in tasks]
         results = {
