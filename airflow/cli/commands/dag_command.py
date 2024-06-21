@@ -306,7 +306,7 @@ def dag_show(args) -> None:
 def dag_serialize(args) -> dict:
 
 
-    dagbag = DagBag(process_subdir(args.subdir))
+    dagbag = DagBag(process_subdir(args.subdir), include_examples=False)
     if dagbag.import_errors:
         from rich import print as rich_print
 
